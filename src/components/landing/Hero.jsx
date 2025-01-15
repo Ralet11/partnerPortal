@@ -1,4 +1,4 @@
-// Hero.jsx
+
 import { Link } from 'react-router-dom'
 
 export default function Hero() {
@@ -40,7 +40,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Reemplazamos <Image /> por <img /> */}
+ 
       <div className="lg:absolute lg:inset-y-0 lg:right-0 lg:w-1/2">
         <img
           className="h-56 w-full object-cover sm:h-72 md:h-96 lg:w-full lg:h-full"

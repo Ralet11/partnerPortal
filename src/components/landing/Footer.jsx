@@ -1,4 +1,4 @@
-// Footer.jsx
+
 import { Link } from 'react-router-dom'
 
 export default function Footer() {
@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="bg-gray-800">
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:py-16 lg:px-8">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
-          {/* Logo y descripción */}
+
           <div className="space-y-8 xl:col-span-1">
             <Link to="/" className="text-2xl font-bold text-white">
               BurgerHub
@@ -15,7 +15,7 @@ export default function Footer() {
               Making the best burgers accessible to everyone, everywhere.
             </p>
 
-            {/* Redes sociales */}
+      
             <div className="flex space-x-6">
               <Link to="#" className="text-gray-400 hover:text-gray-300">
                 <span className="sr-only">Facebook</span>
@@ -24,7 +24,7 @@ export default function Footer() {
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  {/* ...path de icono */}
+               
                 </svg>
               </Link>
               <Link to="#" className="text-gray-400 hover:text-gray-300">
@@ -34,7 +34,7 @@ export default function Footer() {
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  {/* ...path de icono */}
+              
                 </svg>
               </Link>
               <Link to="#" className="text-gray-400 hover:text-gray-300">
@@ -44,13 +44,13 @@ export default function Footer() {
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  {/* ...path de icono */}
+               
                 </svg>
               </Link>
             </div>
           </div>
 
-          {/* Secciones de enlaces */}
+       
           <div className="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div>
@@ -111,7 +111,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
         <div className="mt-12 border-t border-gray-700 pt-8">
           <p className="text-base text-gray-400 xl:text-center">
             &copy; 2024 BurgerHub. All rights reserved.

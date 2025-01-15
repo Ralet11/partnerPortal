@@ -9,14 +9,14 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 bg-white shadow-lg z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          {/* Logo */}
+    
           <div className="flex items-center">
             <Link to="/" className="text-2xl font-bold text-orange-600">
               BurgerHub
             </Link>
           </div>
 
-          {/* Botón menú móvil */}
+
           <div className="flex items-center sm:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
@@ -42,7 +42,7 @@ export default function Navbar() {
             </button>
           </div>
 
-          {/* Menú Desktop */}
+
           <div className="hidden sm:flex sm:items-center sm:space-x-6">
             <Link
               to="/#menu"
@@ -63,7 +63,7 @@ export default function Navbar() {
               About
             </Link>
             
-            {/* Botón discreto de Login */}
+  
             <Link
               to="/login-partner"
               className="border border-orange-600 text-orange-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-600 hover:text-white transition-colors"
@@ -71,7 +71,7 @@ export default function Navbar() {
               Login
             </Link>
 
-            {/* Botón destacado de Join as Partner */}
+          
             <Link
               to="/join-partner"
               className="bg-orange-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-700 transition-colors"
@@ -104,7 +104,7 @@ export default function Navbar() {
             About
           </Link>
           
-          {/* Botón Login en menú móvil */}
+  
           <Link
             to="/login-partner"
             className="block border border-orange-600 text-orange-600 px-4 py-2 rounded-md text-base font-medium hover:bg-orange-600 hover:text-white mt-4 transition-colors"
@@ -112,7 +112,7 @@ export default function Navbar() {
             Login
           </Link>
 
-          {/* Botón Join as Partner en menú móvil */}
+ 
           <Link
             to="/join-partner"
             className="block bg-orange-600 text-white px-4 py-2 rounded-md text-base font-medium hover:bg-orange-700 mt-4 transition-colors"

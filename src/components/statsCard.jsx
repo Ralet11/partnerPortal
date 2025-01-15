@@ -32,7 +32,7 @@ export default function StatsCard({ title, value, progress, timeLeft, icon: Icon
         )}
       </div>
 
-      {/* Barra de progreso */}
+
       {progress !== undefined && (
         <div className="mt-4">
           <div className="flex justify-between items-center mb-2">

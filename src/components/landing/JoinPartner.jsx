@@ -15,10 +15,9 @@ export default function JoinPartner() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Lógica al enviar formulario
+ 
     console.log(formData)
-    // Si deseas redirigir tras registro exitoso, podrías hacer:
-    // navigate('/dashboard')
+
   }
 
   const handleChange = (e) => {
@@ -48,7 +47,6 @@ export default function JoinPartner() {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Email */}
             <div>
               <label
                 htmlFor="email"
@@ -71,8 +69,6 @@ export default function JoinPartner() {
                 />
               </div>
             </div>
-
-            {/* Password */}
             <div>
               <label
                 htmlFor="password"
@@ -95,7 +91,6 @@ export default function JoinPartner() {
               </div>
             </div>
 
-            {/* Confirm Password */}
             <div>
               <label
                 htmlFor="confirmPassword"
@@ -118,7 +113,7 @@ export default function JoinPartner() {
               </div>
             </div>
 
-            {/* Restaurant Name */}
+
             <div>
               <label
                 htmlFor="restaurantName"
@@ -140,8 +135,6 @@ export default function JoinPartner() {
                 />
               </div>
             </div>
-
-            {/* Location */}
             <div>
               <label
                 htmlFor="location"
@@ -164,7 +157,6 @@ export default function JoinPartner() {
               </div>
             </div>
 
-            {/* Botón principal de registro */}
             <div>
               <button
                 type="submit"
@@ -178,7 +170,7 @@ export default function JoinPartner() {
             </div>
           </form>
 
-          {/* Botón para regresar al Dashboard */}
+  
           <div className="mt-6">
             <button
               onClick={() => navigate('/')}

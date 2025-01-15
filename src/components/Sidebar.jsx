@@ -21,12 +21,12 @@ export default function Sidebar() {
 
   return (
     <div className="fixed left-0 top-0 h-screen w-20 bg-gradient-to-b from-primary-dark to-primary flex flex-col items-center py-8 space-y-8">
-      {/* Logo Container */}
+   
       <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
         <img src="/logo.svg" alt="Logo" className="w-8 h-8" />
       </div>
       
-      {/* Nav Menu */}
+
       <nav className="flex-1 flex flex-col items-center space-y-4">
         {menuItems.map((MenuItem, index) => {
           const active = location.pathname === MenuItem.path

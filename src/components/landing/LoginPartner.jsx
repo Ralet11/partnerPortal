@@ -19,15 +19,14 @@ export default function LoginPartner() {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    // Lógica de autenticación
+
     console.log('Datos de login:', formData)
-    // Si todo va bien, podrías hacer:
-    // navigate('/dashboard')
+
   }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      {/* Título y link a registro */}
+
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
           Partner Login
@@ -43,11 +42,11 @@ export default function LoginPartner() {
         </p>
       </div>
 
-      {/* Formulario */}
+
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
-            {/* Email */}
+      
             <div>
               <label
                 htmlFor="email"
@@ -73,7 +72,7 @@ export default function LoginPartner() {
               </div>
             </div>
 
-            {/* Password */}
+  
             <div>
               <label
                 htmlFor="password"
@@ -99,7 +98,6 @@ export default function LoginPartner() {
               </div>
             </div>
 
-            {/* Botón de Login */}
             <div>
               <button
                 type="submit"
@@ -115,7 +113,7 @@ export default function LoginPartner() {
             </div>
           </form>
 
-          {/* Botón para regresar al Dashboard */}
+     
           <div className="mt-6">
             <button
               onClick={() => navigate('/')}
