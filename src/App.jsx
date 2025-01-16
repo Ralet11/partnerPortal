@@ -8,8 +8,8 @@ import Orders from './views/Orders'
 import Statistics from './views/Statistics'
 import History from './views/History'
 import Settings from './views/Settings'
-import JoinPartner from './components/landing/JoinPartner'
-import LoginPartner from './components/landing/LoginPartner'
+import JoinPartner from './components/landing/JoinPartnerModal'
+import LoginPartner from './components/landing/LoginPortalModal'
 
 function App() {
   return (
