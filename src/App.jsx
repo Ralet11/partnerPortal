@@ -2,7 +2,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './views/Layout'
 import LandingPage from './views/LandingPage'  // tu landing
-   // tu login (opcional)
+// tu login (opcional)
 import Dashboard from './views/Dashboard'
 import Orders from './views/Orders'
 import Statistics from './views/Statistics'
@@ -17,14 +17,14 @@ function App() {
       <Routes>
         {/* Sección PÚBLICA */}
         <Route path="/" element={<LandingPage />} />
-        <Route path='/join-partner' element={<JoinPartner />}/>
-        <Route path='/login-partner' element={<LoginPartner />}/>
-    
+        <Route path='/join-partner' element={<JoinPartner />} />
+        <Route path='/login-partner' element={<LoginPartner />} />
+
         <Route path="/partner" element={<Layout />}>
-          
+
           <Route index element={<Navigate to="/partner/dashboard" replace />} />
 
-  
+
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="orders" element={<Orders />} />
           <Route path="statistics" element={<Statistics />} />

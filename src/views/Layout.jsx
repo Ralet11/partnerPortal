@@ -4,16 +4,16 @@ import Header from '../components/Header'
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-background-light text-text-primary">
-      {/* Barra lateral fija */}
+    <div className="min-h-screen bg-background dark:bg-background-dark">
+
       <Sidebar />
 
-      {/* Contenedor que "empuja" la vista a la derecha */}
-      <div className="ml-20">
-        {/* Cabecera (header) */}
+     
+      <div className="ml-5">
+     
         <Header />
 
-        {/* Aquí se muestra el contenido de cada ruta */}
+       
         <main className="max-w-screen-xl mx-auto px-6 mt-6">
           <Outlet />
         </main>

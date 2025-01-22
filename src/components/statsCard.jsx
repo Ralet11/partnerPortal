@@ -1,62 +1,29 @@
-// Ejemplo: StatsCard.jsx
-export default function StatsCard({ title, value, progress, timeLeft, icon: Icon, gradient }) {
+export default function StatsCard({ title, value, progress, timeLeft, icon: Icon }) {
   return (
-    <div
-      className={`
-        relative overflow-hidden rounded-2xl p-6 transition-all duration-300
-        ${gradient || 'bg-card-light hover:shadow-lg'}
-        group hover:-translate-y-1
-      `}
-    >
-      <div className="flex items-start justify-between">
+    <div className="bg-card dark:bg-card-dark rounded-xl border border-gray-200 dark:border-text-light/10 p-6 shadow-lg">
+      <div className="flex items-center justify-between">
         <div>
-          <p className={`text-sm ${gradient ? 'text-white/80' : 'text-text-secondary'}`}>
-            {title}
-          </p>
-          <h3 className={`text-2xl font-bold mt-1 ${gradient ? 'text-white' : 'text-text-primary'}`}>
-            {value}
-          </h3>
-          {timeLeft && (
-            <p className={`text-sm mt-1 ${gradient ? 'text-white/80' : 'text-text-secondary'}`}>
-              {timeLeft}
-            </p>
-          )}
+          <p className="text-sm text-text-secondary dark:text-text-light">{title}</p>
+          <h3 className="text-2xl font-bold text-text-primary dark:text-white mt-1">{value}</h3>
         </div>
-        {Icon && (
-          <div className={`
-            p-3 rounded-xl
-            ${gradient ? 'bg-white/10' : 'bg-primary/5'}
-          `}>
-            <Icon className={`w-6 h-6 ${gradient ? 'text-white' : 'text-primary'}`} />
-          </div>
-        )}
+        <div className="bg-background dark:bg-background-dark p-3 rounded-xl">
+          <Icon className="w-6 h-6 text-primary dark:text-primary-light" />
+        </div>
       </div>
-
-
-      {progress !== undefined && (
-        <div className="mt-4">
-          <div className="flex justify-between items-center mb-2">
-            <span className={`text-sm ${gradient ? 'text-white/80' : 'text-text-secondary'}`}>
-              Progress
-            </span>
-            <span className={`text-sm font-medium ${gradient ? 'text-white' : 'text-text-primary'}`}>
-              {progress}%
-            </span>
-          </div>
-          <div className={`
-            h-2 rounded-full overflow-hidden
-            ${gradient ? 'bg-white/10' : 'bg-primary/10'}
-          `}>
-            <div
-              className={`
-                h-full rounded-full transition-all duration-300
-                ${gradient ? 'bg-white' : 'bg-primary'}
-              `}
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+      <div className="mt-4">
+        <div className="flex justify-between text-sm mb-2">
+          <span className="text-text-secondary dark:text-text-light">Progress</span>
+          <span className="text-text-primary dark:text-white font-medium">{progress}%</span>
         </div>
-      )}
+        <div className="h-2 bg-background dark:bg-background-dark rounded-full overflow-hidden">
+          <div
+            className="h-full bg-primary dark:bg-primary-light rounded-full transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+      <p className="text-sm text-text-secondary dark:text-text-light mt-4">{timeLeft}</p>
     </div>
   )
 }
+

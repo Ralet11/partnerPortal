@@ -1,45 +1,49 @@
+// tailwind.config.js (o tailwind.config.mjs)
+
+import tailwindScrollbar from "tailwind-scrollbar";
+
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,jsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,jsx}"],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         primary: {
-          light: '#7E67CA',
-          DEFAULT: '#5A3FA8',
-          dark: '#47348D',
+          light: "#FF8852",
+          DEFAULT: "#F15A24",
+          dark: "#C04415",
         },
         secondary: {
-          light: '#F5AFC4',
-          DEFAULT: '#F07EA9',
-          dark: '#D6718F',
+          light: "#FFD5C2",
+          DEFAULT: "#FFC4AD",
+          dark: "#E6AE96",
         },
         background: {
-          light: '#F7F9FC',
-          DEFAULT: '#EBEFF4',
-          dark: '#1C2237',
+          light: "#E2E8F0",
+          DEFAULT: "#E2E8F0",
+          dark: "#0F1117",
         },
         card: {
-          light: '#FFFFFF',
-          DEFAULT: '#FFFFFF',
-          dark: '#0F172A',
+          light: "#FFFFFF",
+          DEFAULT: "#FFFFFF",
+          dark: "#171923",
         },
         text: {
-          primary: '#2F3A4F',
-          secondary: '#697184',
-          light: '#A4AEC4',
+          primary: "#1E293B",
+          secondary: "#64748B",
+          light: "#94A3B8",
         },
         danger: {
-          DEFAULT: '#FF5A60',
+          DEFAULT: "#FF5A60",
         },
         success: {
-          DEFAULT: '#4FD1C5',
+          DEFAULT: "#4FD1C5",
         },
       },
     },
   },
-  plugins: [],
-}
+  plugins: [
+    tailwindScrollbar({ nocompatible: true }), 
+  ],
+};

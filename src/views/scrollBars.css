@@ -1,0 +1,25 @@
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px; /* Grosor del scrollbar */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--scrollbar-track); /* Usamos variables CSS para soportar el modo oscuro y claro */
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb); /* Color del "thumb" */
+    border-radius: 8px; /* Redondeado */
+    border: 1px solid transparent;
+  }
+  
+  /* Scrollbar para modo claro */
+  :root {
+    --scrollbar-track: #f1f5f9; /* Track en modo claro */
+    --scrollbar-thumb: #d1d5db; /* Thumb en modo claro */
+  }
+  
+  /* Scrollbar para modo oscuro */
+  [data-theme="dark"] {
+    --scrollbar-track: #1f2937; /* Track en modo oscuro */
+    --scrollbar-thumb: #4b5563; /* Thumb en modo oscuro */
+  }
