@@ -1,8 +1,6 @@
 import { MagnifyingGlassIcon, BellIcon } from "@heroicons/react/24/outline";
 import ThemeToggle from './ThemeToogle';
-
-
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { logoutPartner } from '../redux/slices/partnerSlice'; 
 
@@ -10,11 +8,17 @@ export default function Header() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const partner = useSelector((state) => state.partner);
 
-
+  // Cerrar sesión
   const handleLogout = () => {
-    dispatch(logoutPartner()); 
-    navigate('/');             
+    dispatch(logoutPartner());
+    navigate('/'); 
+  };
+
+  // Ir a Settings
+  const handleGoToSettings = () => {
+    navigate('/partner/settings');
   };
 
   return (
@@ -25,23 +29,7 @@ export default function Header() {
       </h1>
 
       <div className="flex items-center space-x-6">
-  
-     {/*    <div className="relative hidden md:block">
-          <MagnifyingGlassIcon className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary dark:text-text-light" />
-          <input
-            type="text"
-            placeholder="Search orders..."
-            className="
-              pl-10 pr-4 py-2 rounded-xl border border-gray-200 dark:border-text-light/10
-              focus:outline-none focus:ring-2 focus:ring-primary/20
-              text-sm text-text-primary dark:text-white 
-              placeholder:text-text-secondary dark:placeholder:text-text-light
-              bg-background dark:bg-background-dark
-            "
-          />
-        </div> */}
 
-  
         <ThemeToggle />
 
         {/* Botón notificaciones */}
@@ -60,7 +48,7 @@ export default function Header() {
             />
             <div className="text-left">
               <p className="text-sm font-semibold text-text-primary dark:text-white">
-                John Doe
+                {partner.name}
               </p>
               <p className="text-xs text-text-secondary dark:text-text-light">
                 Restaurant Owner
@@ -83,14 +71,15 @@ export default function Header() {
             >
               Profile
             </a>
-            <a
-              href="#settings"
-              className="block px-4 py-2 text-sm text-text-primary dark:text-white hover:bg-background dark:hover:bg-background-dark"
+            {/* Usamos onClick para ir a Settings */}
+            <button
+              onClick={handleGoToSettings}
+              className="block w-full text-left px-4 py-2 text-sm text-text-primary dark:text-white hover:bg-background dark:hover:bg-background-dark"
             >
               Settings
-            </a>
+            </button>
             <div className="my-1 border-t border-gray-200 dark:border-text-light/10"></div>
-            {/* 4) En lugar de 'href', usamos onClick para cerrar sesión */}
+            {/* Cerrar sesión */}
             <button
               onClick={handleLogout}
               className="block w-full text-left px-4 py-2 text-sm text-primary dark:text-primary-light hover:bg-background dark:hover:bg-background-dark"
