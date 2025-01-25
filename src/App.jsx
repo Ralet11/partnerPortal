@@ -30,7 +30,7 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="statistics" element={<Statistics />} />
           <Route path="history" element={<History />} />
-          <Route path="settings" element={<Settings />} />  {/* <-- NUEVA RUTA */}
+          <Route path="settings" element={<Settings />} /> 
         </Route>
 
         {/* RUTA 404 (opcional) */}

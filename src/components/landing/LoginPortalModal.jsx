@@ -1,4 +1,3 @@
-// LoginPartnerModal.jsx
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +6,6 @@ import axios from 'axios';
 // Importamos Redux hooks y el action que configuramos:
 import { useDispatch } from 'react-redux';
 import { setPartnerData } from '../../redux/slices/partnerSlice';
-
 
 export default function LoginPartnerModal({
   isOpen,
@@ -18,6 +16,7 @@ export default function LoginPartnerModal({
     email: '',
     password: '',
   });
+  const [errorMessage, setErrorMessage] = useState(''); // Estado para manejar errores
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -29,24 +28,18 @@ export default function LoginPartnerModal({
     }));
   };
 
-  // Marcamos la función como async:
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login data:', formData);
+    setErrorMessage(''); // Limpia cualquier mensaje de error previo
 
     try {
-      
       const { data } = await axios.post(
         `${import.meta.env.VITE_API_URL}/partner/login`,
         formData
       );
 
-      console.log('Login response:', data);
-
-   
       const { partner, token } = data;
 
-    
       dispatch(
         setPartnerData({
           id: partner.id,
@@ -60,13 +53,17 @@ export default function LoginPartnerModal({
 
       // Redireccionamos al dashboard
       navigate('/partner/dashboard');
+      onClose(); // Opcional: Cierra el modal tras un inicio de sesión exitoso
     } catch (error) {
       console.error('Error al hacer login:', error);
-      // Muestra algún mensaje de error al usuario o maneja el error aquí
-    }
 
-    // Cerramos el modal (opcional, si quieres cerrarlo tras el login)
-    onClose();
+      // Verifica si el error tiene respuesta del backend y extrae el mensaje
+      if (error.response && error.response.data && error.response.data.error) {
+        setErrorMessage(error.response.data.error); // Usa el mensaje del backend
+      } else {
+        setErrorMessage('An error occurred. Please try again later.');
+      }
+    }
   };
 
   if (!isOpen) return null;
@@ -108,6 +105,13 @@ export default function LoginPartnerModal({
           </button>
         </p>
 
+        {/* Mostrar mensaje de error si existe */}
+        {errorMessage && (
+          <div className="mt-4 text-sm text-red-600 text-center">
+            {errorMessage}
+          </div>
+        )}
+
         <form className="mt-4 space-y-4" onSubmit={handleSubmit}>
           <div>
             <label
@@ -131,7 +135,6 @@ export default function LoginPartnerModal({
             />
           </div>
 
-          {/* Password */}
           <div>
             <label
               htmlFor="password"
@@ -154,7 +157,6 @@ export default function LoginPartnerModal({
             />
           </div>
 
-          {/* Login button */}
           <button
             type="submit"
             className="w-full flex justify-center py-2 px-4 
@@ -168,7 +170,6 @@ export default function LoginPartnerModal({
           </button>
         </form>
 
-        {/* Cancel button */}
         <div className="mt-4">
           <button
             onClick={onClose}

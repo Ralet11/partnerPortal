@@ -1,50 +1,46 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import axios from "axios"
 import "./scrollBars.css"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
 import OrderDetailsModal from "../components/OrderModal"
+
+// IMPORTA TUS ACCIONES PARA ACTUALIZAR ÓRDENES EN EL STATE SI ES NECESARIO
+import { updateOrder } from "../redux/slices/partnerSlice.js" // <-- Ajusta la ruta y acción según tu proyecto
 
 const PRIMARY_COLOR = "#F15A24"
 const API_URL = import.meta.env.VITE_API_URL
 
 export default function Orders() {
+  const dispatch = useDispatch()
   const partner = useSelector((state) => state.partner)
-  const [orders, setOrders] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  // Ahora, las órdenes vienen desde el state global: partner.orders
   const [searchTerm, setSearchTerm] = useState("")
   const [selectedOrder, setSelectedOrder] = useState(null)
 
+  // Si la API call se hace en Dashboard y se guardan las órdenes en partner.orders,
+  // aquí simplemente las tomas desde partner.orders
+  const orders = partner.orders || []
+
+  const [error, setError] = useState(null)
+
   console.log(orders)
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/order/partner/orders`, {
-          headers: {
-            Authorization: `Bearer ${partner.token}`,
-          },
-        })
-        setOrders(response.data)
-        setLoading(false)
-      } catch (err) {
-        setError("Error fetching orders")
-        setLoading(false)
-      }
-    }
-    fetchOrders()
-  }, [partner.token])
+  // Eliminamos el useEffect de la llamada a la API.
+  // Ya no se hace aquí, sino en Dashboard.
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       const response = await axios.put(`${API_URL}/order/${orderId}`, {
         status: newStatus,
       })
-      setOrders((prev) => prev.map((o) => (o.id === orderId ? response.data : o)))
+      // Asumiendo que `response.data` es la órden actualizada
+      // Disparas una acción para actualizar tu store con la nueva info
+      dispatch(updateOrder(response.data))
     } catch (err) {
       console.error("Error updating order status:", err)
+      setError("Error updating order status")
     }
   }
 
@@ -60,8 +56,13 @@ export default function Orders() {
     setSelectedOrder(null)
   }
 
-  if (loading) {
-    return <div className="text-center text-xl text-text-secondary dark:text-text-light mt-12">Loading orders...</div>
+  // Si no hay órdenes y en lo que la data se carga, puedes mostrar un loading en Dashboard o donde prefieras
+  if (!orders.length && !error) {
+    return (
+      <div className="text-center text-xl text-text-secondary dark:text-text-light mt-12">
+        Loading orders (or no orders found)...
+      </div>
+    )
   }
   if (error) {
     return <div className="text-center text-xl text-red-600 mt-12">{error}</div>
@@ -287,16 +288,17 @@ function Button({ children, onClick, variant = "primary", size = "default" }) {
   let variantClasses
   switch (variant) {
     case "primary":
-      variantClasses = `bg-[#F15A24] text-white hover:bg-[#d64c1e]`
+      variantClasses = "bg-[#F15A24] text-white hover:bg-[#d64c1e]"
       break
     case "secondary":
-      variantClasses = `bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600`
+      variantClasses =
+        "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
       break
     case "outline":
-      variantClasses = `border border-[#F15A24] text-[#F15A24] bg-transparent hover:bg-[#f15a241a]`
+      variantClasses = "border border-[#F15A24] text-[#F15A24] bg-transparent hover:bg-[#f15a241a]"
       break
     default:
-      variantClasses = `bg-gray-200 text-gray-700`
+      variantClasses = "bg-gray-200 text-gray-700"
   }
 
   return (
@@ -305,4 +307,3 @@ function Button({ children, onClick, variant = "primary", size = "default" }) {
     </button>
   )
 }
-

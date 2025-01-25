@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Line } from "react-chartjs-2"
 import {
   Chart as ChartJS,
@@ -15,14 +15,24 @@ import {
 } from "chart.js"
 import { ClipboardIcon, ArrowTrendingUpIcon, CheckCircleIcon } from "@heroicons/react/24/outline"
 
-import StatsCard from '../components/statsCard'
-import { useSelector } from "react-redux"
+import StatsCard from "../components/statsCard"
+import { useSelector, useDispatch } from "react-redux"
+
+// IMPORTA TU ACCIÓN PARA GUARDAR ÓRDENES EN EL STATE
+import { setOrders } from "../redux/slices/partnerSlice"
+
+import axios from "axios"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Filler, Legend)
 
+const API_URL = import.meta.env.VITE_API_URL // Ajusta esto si tu variable es distinta
+
 export default function Dashboard() {
+  const dispatch = useDispatch()
   const partner = useSelector((state) => state.partner)
-  const [orders] = useState({
+
+  // Ejemplo de estado local para el gráfico de órdenes (datos fijos de ejemplo)
+  const [ordersData] = useState({
     labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
     datasets: [
       {
@@ -39,7 +49,26 @@ export default function Dashboard() {
     ],
   })
 
-  console.log(partner, "part")
+  // Llamada a la API para traer las órdenes y guardarlas en el estado global
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/order/partner/orders`, {
+          headers: {
+            Authorization: `Bearer ${partner.token}`,
+          },
+        })
+        // Aquí actualizas el estado global de partner, guardando las órdenes
+        dispatch(setOrders(response.data))
+      } catch (err) {
+        console.error("Error fetching orders in Dashboard:", err)
+      }
+    }
+
+    if (partner.token) {
+      fetchOrders()
+    }
+  }, [partner.token, dispatch])
 
   const chartOptions = {
     responsive: true,
@@ -108,7 +137,7 @@ export default function Dashboard() {
                   </select>
                 </div>
                 <div className="h-[400px]">
-                  <Line options={chartOptions} data={orders} />
+                  <Line options={chartOptions} data={ordersData} />
                 </div>
               </div>
             </div>
@@ -146,4 +175,3 @@ export default function Dashboard() {
     </div>
   )
 }
-

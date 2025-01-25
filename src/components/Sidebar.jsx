@@ -8,8 +8,6 @@ export default function Sidebar() {
   const menuItems = [
     { icon: HomeIcon, path: "/partner/dashboard", label: "Dashboard" },
     { icon: ClipboardIcon, path: "/partner/orders", label: "Orders" },
-    { icon: ChartBarIcon, path: "/partner/statistics", label: "Statistics" },
-    { icon: ClockIcon, path: "/partner/history", label: "History" },
     { icon: CogIcon, path: "/partner/settings", label: "Settings" },
   ]
 

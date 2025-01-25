@@ -65,12 +65,7 @@ export default function Header() {
               transition-all duration-200
             "
           >
-            <a
-              href="#profile"
-              className="block px-4 py-2 text-sm text-text-primary dark:text-white hover:bg-background dark:hover:bg-background-dark"
-            >
-              Profile
-            </a>
+            
             {/* Usamos onClick para ir a Settings */}
             <button
               onClick={handleGoToSettings}
