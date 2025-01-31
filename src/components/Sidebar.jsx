@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom"
-import { HomeIcon, ClipboardIcon, ChartBarIcon, ClockIcon, CogIcon } from "@heroicons/react/24/outline"
+import { HomeIcon, ClipboardIcon, ChartBarIcon, ClockIcon, CogIcon, ShoppingBagIcon } from "@heroicons/react/24/outline"
 
 export default function Sidebar() {
   const location = useLocation()
@@ -9,6 +9,7 @@ export default function Sidebar() {
     { icon: HomeIcon, path: "/partner/dashboard", label: "Dashboard" },
     { icon: ClipboardIcon, path: "/partner/orders", label: "Orders" },
     { icon: CogIcon, path: "/partner/settings", label: "Settings" },
+    { icon: ShoppingBagIcon, path: "/partner/products", label: "Products" },
   ]
 
   return (

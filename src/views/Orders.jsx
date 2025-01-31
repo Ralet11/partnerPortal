@@ -5,9 +5,9 @@ import axios from "axios";
 import "./scrollBars.css";
 import { useSelector, useDispatch } from "react-redux";
 import OrderDetailsModal from "../components/OrderModal";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-// IMPORTA TUS ACCIONES PARA ACTUALIZAR ÓRDENES EN EL STATE SI ES NECESARIO
-import { updateOrder } from "../redux/slices/partnerSlice.js"; // <-- Ajusta la ruta y acción según tu proyecto
+import { updateOrder } from "../redux/slices/partnerSlice.js";
 
 const PRIMARY_COLOR = "#F15A24";
 const API_URL = import.meta.env.VITE_API_URL;
@@ -15,7 +15,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 export default function Orders() {
   const dispatch = useDispatch();
   const partner = useSelector((state) => state.partner);
-  // Las órdenes vienen desde el state global: partner.orders
   const orders = partner.orders || [];
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -42,23 +41,16 @@ export default function Orders() {
     cancelada: filteredOrders.filter((o) => o.status === "cancelada"),
   };
 
-  // Actualiza el estado del pedido llamando a tu backend y luego
-  // refrescando la data en Redux:
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       const response = await axios.put(`${API_URL}/order/${orderId}`, {
         status: newStatus,
       });
-      // Asumiendo que `response.data` es la órden actualizada
       dispatch(updateOrder(response.data));
     } catch (err) {
       console.error("Error updating order status:", err);
       setError("Error updating order status");
     }
-  };
-
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
   };
 
   const openOrderDetails = (order) => {
@@ -76,6 +68,7 @@ export default function Orders() {
       </div>
     );
   }
+
   if (error) {
     return <div className="text-center text-xl text-red-600 mt-12">{error}</div>;
   }
@@ -84,25 +77,27 @@ export default function Orders() {
     <div className="min-h-screen bg-background dark:bg-background-dark transition-colors duration-300">
       <div className="ml-20">
         <div className="max-w-screen-xl mx-auto px-8 pt-8">
-          <h1 className="text-3xl font-bold text-text-primary dark:text-white mb-6">
-            Orders
-          </h1>
-
           <div className="mb-8">
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              placeholder="Search by code or address..."
-              className="w-full md:w-1/2 lg:w-1/3 p-2 rounded-md border border-gray-300 
-                         dark:border-text-light/10 bg-white dark:bg-[#1e1e1e]
-                         text-text-primary dark:text-white
-                         focus:outline-none focus:ring-2 focus:ring-orange-500
-                         transition-colors duration-300"
-            />
+            {/* Search Bar */}
+            <div className="relative w-full md:w-1/2 lg:w-1/3">
+              <span className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <MagnifyingGlassIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+              </span>
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Search by code or address..."
+                className="w-full pl-10 p-2 rounded-md border border-gray-300 
+                           dark:border-gray-700 bg-white dark:bg-gray-800
+                           text-gray-900 dark:text-gray-100
+                           focus:outline-none focus:ring-2 focus:ring-orange-500
+                           transition-colors duration-300"
+              />
+            </div>
           </div>
 
-          {/* Fila 1: pendiente, aceptada, envio */}
+          {/* Order Panels */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch mb-8">
             <Panel
               title="Pending"
@@ -123,8 +118,6 @@ export default function Orders() {
               onViewDetails={openOrderDetails}
             />
           </div>
-
-          {/* Fila 2: finalizada, rechazada, cancelada */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
             <Panel
               title="Completed"
@@ -159,12 +152,11 @@ export default function Orders() {
   );
 }
 
-// ================ Panel ================
 function Panel({ title, orders, onStatusChange, onViewDetails }) {
   return (
     <div
       className="bg-card dark:bg-card-dark rounded-xl 
-                 border border-gray-200 dark:border-text-light/10 
+                 border border-gray-200 dark:border-gray-700 
                  p-6 md:p-8 shadow-lg flex flex-col 
                  transition-colors duration-300"
     >
@@ -172,12 +164,11 @@ function Panel({ title, orders, onStatusChange, onViewDetails }) {
         {title}
         <span
           className="text-sm font-normal text-text-secondary dark:text-text-light 
-                     bg-gray-100 dark:bg-[#2a2a2a] px-2 py-0.5 rounded-full"
+                     bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded-full"
         >
           {orders.length}
         </span>
       </h2>
-
       <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar flex-1">
         {orders.length === 0 ? (
           <p className="text-center text-text-secondary dark:text-text-light">
@@ -198,18 +189,13 @@ function Panel({ title, orders, onStatusChange, onViewDetails }) {
   );
 }
 
-// ================ OrderCard ================
 function OrderCard({ order, onStatusChange, onViewDetails }) {
-  // Funciones de cambio de estado
   const moveToAccepted = () => onStatusChange(order.id, "aceptada");
   const moveToShipping = () => onStatusChange(order.id, "envio");
   const moveToCompleted = () => onStatusChange(order.id, "finalizada");
   const moveToRejected = () => onStatusChange(order.id, "rechazada");
   const moveToCancelled = () => onStatusChange(order.id, "cancelada");
 
-  // Renderizar botones según estado
-  // - Se puede "rechazar" solo si es "pendiente"
-  // - Se puede "cancelar" solo si no es "pendiente" ni "finalizada"
   let actionButtons = null;
 
   switch (order.status) {
@@ -250,40 +236,38 @@ function OrderCard({ order, onStatusChange, onViewDetails }) {
       );
       break;
     default:
-      // finalizada, rechazada, cancelada → sin botones
       actionButtons = null;
   }
 
   return (
     <div
-      className="bg-background dark:bg-[#1e1e1e] rounded-lg 
-                 border border-gray-200 dark:border-text-light/10 
-                 transition-all duration-200 hover:border-[#F15A24] 
-                 dark:hover:border-[#F15A24] group"
+      className="bg-background dark:bg-gray-800 rounded-lg 
+                 border border-gray-300 dark:border-gray-700 
+                 transition-all duration-200 hover:border-orange-500 
+                 dark:hover:border-orange-500 group"
     >
       <div className="p-3">
         <div className="flex items-start justify-between mb-2">
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="text-sm font-medium text-text-primary dark:text-white">
+              <h3 className="text-sm font-medium text-gray-900 dark:text-white">
                 Order #{order.id}
               </h3>
               <StatusBadge status={order.status} />
             </div>
-            <p className="text-xs text-text-secondary dark:text-gray-400 line-clamp-1">
+            <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-1">
               {order.deliveryAddress}
             </p>
           </div>
-          <span className="text-xs font-medium text-[#F15A24] dark:text-[#F15A24]">
+          <span className="text-xs font-medium text-orange-500">
             ${order.price}
           </span>
         </div>
-
         <div className="flex items-center justify-between gap-2 mt-3">
           <button
             onClick={() => onViewDetails(order)}
             className="text-xs text-gray-600 dark:text-gray-400 
-                       hover:text-[#F15A24] dark:hover:text-[#F15A24] 
+                       hover:text-orange-500 dark:hover:text-orange-500 
                        transition-colors duration-200"
           >
             View Details →
@@ -295,7 +279,6 @@ function OrderCard({ order, onStatusChange, onViewDetails }) {
   );
 }
 
-// ================ StatusBadge ================
 function StatusBadge({ status }) {
   let bg, textColor;
   switch (status) {
@@ -304,23 +287,23 @@ function StatusBadge({ status }) {
       textColor = "#F15A24";
       break;
     case "aceptada":
-      bg = "#16a34a1A"; // verde suave
+      bg = "#16a34a1A";
       textColor = "#16a34a";
       break;
     case "envio":
-      bg = "#2563eb1A"; // azul suave
+      bg = "#2563eb1A";
       textColor = "#2563eb";
       break;
     case "finalizada":
-      bg = "#64748b1A"; // gris/azul suave
+      bg = "#64748b1A";
       textColor = "#475569";
       break;
     case "rechazada":
-      bg = "#dc26261A"; // rojo suave
+      bg = "#dc26261A";
       textColor = "#dc2626";
       break;
     case "cancelada":
-      bg = "#9CA3AF1A"; // gris claro
+      bg = "#9CA3AF1A";
       textColor = "#6B7280";
       break;
     default:
@@ -341,7 +324,6 @@ function StatusBadge({ status }) {
   );
 }
 
-// ================ Button (componente auxiliar) ================
 function Button({ children, onClick, variant = "primary", size = "default" }) {
   const baseClasses =
     "font-medium rounded focus:outline-none transition-all duration-200";
@@ -354,18 +336,14 @@ function Button({ children, onClick, variant = "primary", size = "default" }) {
   let variantClasses;
   switch (variant) {
     case "primary":
-      variantClasses = "bg-[#F15A24] text-white hover:bg-[#d64c1e]";
+      variantClasses = "bg-orange-500 text-white hover:bg-orange-600";
       break;
     case "danger":
       variantClasses = "bg-red-600 text-white hover:bg-red-700";
       break;
     case "outline":
       variantClasses =
-        "border border-[#F15A24] text-[#F15A24] bg-transparent hover:bg-[#f15a241a]";
-      break;
-    case "secondary":
-      variantClasses =
-        "bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600";
+        "border border-orange-500 text-orange-500 bg-transparent hover:bg-orange-100";
       break;
     default:
       variantClasses = "bg-gray-200 text-gray-700";

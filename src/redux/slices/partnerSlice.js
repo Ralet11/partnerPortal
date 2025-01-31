@@ -1,6 +1,17 @@
-// src/redux/slices/partnerSlice.js
-
 import { createSlice } from '@reduxjs/toolkit';
+
+
+function isToday(dateString) {
+  if (!dateString) return false;
+  const date = new Date(dateString);
+  const today = new Date();
+
+  return (
+    date.getDate() === today.getDate() &&
+    date.getMonth() === today.getMonth() &&
+    date.getFullYear() === today.getFullYear()
+  );
+}
 
 const initialState = {
   id: null,
@@ -12,13 +23,14 @@ const initialState = {
   longitude: null,
   token: null,
   isLoggedIn: false,
-  orders: [], // Nuevo elemento para almacenar las órdenes del partner
+  orders: [], 
 };
 
 export const partnerSlice = createSlice({
   name: 'partner',
   initialState,
   reducers: {
+
     setPartnerData: (state, action) => {
       const { id, name, email, latitude, longitude, token } = action.payload;
       state.id = id;
@@ -29,6 +41,7 @@ export const partnerSlice = createSlice({
       state.token = token;
       state.isLoggedIn = true;
     },
+
     logoutPartner: (state) => {
       state.id = null;
       state.name = '';
@@ -39,8 +52,10 @@ export const partnerSlice = createSlice({
       state.longitude = null;
       state.token = null;
       state.isLoggedIn = false;
-      state.orders = []; // Limpia las órdenes al cerrar sesión
+      state.orders = []; n
     },
+
+    
     updatePartnerData: (state, action) => {
       const { name, email, phone, address } = action.payload;
       if (name !== undefined) state.name = name;
@@ -49,31 +64,62 @@ export const partnerSlice = createSlice({
       if (address !== undefined) state.address = address;
     },
 
-    // Nueva acción para sobrescribir todas las órdenes del partner
+   
     setOrders: (state, action) => {
+      const allOrders = action.payload || [];
+      const closedStatuses = ['cancelada', 'finalizada', 'rechazada'];
+
+      const filteredOrders = allOrders.filter(order => {
+        const isActive = !closedStatuses.includes(order.status.toLowerCase());
+        const isClosedToday =
+          closedStatuses.includes(order.status.toLowerCase()) && isToday(order.updatedAt);
+        return isActive || isClosedToday;
+      });
+
+      state.orders = filteredOrders;
+    },
+
+   
+    setAllOrders: (state, action) => {
       state.orders = action.payload;
     },
 
-    // --- NUEVA ACCIÓN updateOrder ---
+    
     updateOrder: (state, action) => {
       const updatedOrder = action.payload;
+      const index = state.orders.findIndex(order => order.id === updatedOrder.id);
 
-      // Buscamos la posición de la orden que coincida en ID
-      const index = state.orders.findIndex((o) => o.id === updatedOrder.id);
       if (index !== -1) {
-        // Reemplazamos esa orden con la nueva
         state.orders[index] = updatedOrder;
+      } else {
+        
+        const closedStatuses = ['cancelada', 'finalizada', 'rechazada'];
+        const isActive = !closedStatuses.includes(updatedOrder.status.toLowerCase());
+        const isClosedToday = closedStatuses.includes(updatedOrder.status.toLowerCase()) && isToday(updatedOrder.updatedAt);
+
+        if (isActive || isClosedToday) {
+          state.orders.push(updatedOrder);
+        }
       }
+    },
+
+   
+    removeOrder: (state, action) => {
+      state.orders = state.orders.filter(order => order.id !== action.payload);
     },
   },
 });
+
 
 export const {
   setPartnerData,
   logoutPartner,
   updatePartnerData,
   setOrders,
-  updateOrder, // ← Exportamos la nueva acción
+  setAllOrders,
+  updateOrder,
+  removeOrder,
 } = partnerSlice.actions;
+
 
 export default partnerSlice.reducer;
