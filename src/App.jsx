@@ -15,6 +15,8 @@ import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { setOrders } from './redux/slices/partnerSlice'
 import socket from './config/socket'
+import ResetPassword from './views/ResetPassword'
+import ResetPasswordUser from './views/ResetPasswordUser'
 // Importa tu socket
 
 
@@ -75,7 +77,8 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path='/join-partner' element={<JoinPartner />} />
         <Route path='/login-partner' element={<LoginPartner />} />
-
+        <Route path="/reset-password/:tokenPassword" element={<ResetPassword />} />
+        <Route path="/reset-password/user/:tokenPassword" element={<ResetPasswordUser />} />
         {/* Sección PRIVADA (Layout + sub-rutas) */}
         <Route path="/partner" element={<Layout />}>
           {/* Redirige a /partner/dashboard */}

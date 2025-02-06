@@ -2,7 +2,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function Navbar({ onLoginClick, onJoinClick }) {
+/**
+ * 
+ * @param {function} onLoginClick - función que se llama al hacer click en "Login"
+ * @param {function} onJoinClick - función que se llama al hacer click en "Join as Partner"
+ * @param {boolean} isUser - Indica si se deben ocultar los botones de login. Por defecto, false.
+ */
+export default function Navbar({ onLoginClick, onJoinClick, isUser = false }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -68,12 +74,15 @@ export default function Navbar({ onLoginClick, onJoinClick }) {
               About
             </a>
 
-            <button
-              onClick={onLoginClick}
-              className="border border-orange-600 text-orange-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-600 hover:text-white transition-colors"
-            >
-              Login
-            </button>
+            {/* Si isUser es false, mostramos el botón "Login" */}
+            {!isUser && (
+              <button
+                onClick={onLoginClick}
+                className="border border-orange-600 text-orange-600 px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-600 hover:text-white transition-colors"
+              >
+                Login
+              </button>
+            )}
 
             <button
               onClick={onJoinClick}
@@ -110,15 +119,18 @@ export default function Navbar({ onLoginClick, onJoinClick }) {
             About
           </a>
 
-          <button
-            onClick={() => {
-              onLoginClick();
-              setIsOpen(false);
-            }}
-            className="block border border-orange-600 text-orange-600 px-4 py-2 rounded-md text-base font-medium hover:bg-orange-600 hover:text-white mt-4 transition-colors"
-          >
-            Login
-          </button>
+          {/* Si isUser es false, mostramos el botón "Login" en móvil */}
+          {!isUser && (
+            <button
+              onClick={() => {
+                onLoginClick();
+                setIsOpen(false);
+              }}
+              className="block border border-orange-600 text-orange-600 px-4 py-2 rounded-md text-base font-medium hover:bg-orange-600 hover:text-white mt-4 transition-colors"
+            >
+              Login
+            </button>
+          )}
 
           <button
             onClick={() => {
